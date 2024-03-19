@@ -1,0 +1,20 @@
+{
+  "name": "test-name/test-project-name",
+  "authors": [
+    {
+      "name": "O.Nechay",
+      "email": "o.nechay0602@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/",
+      "Core\\": "core/",
+      "Database\\": "database/",
+      "Database\\Migrations\\": "database/migrations/"
+    }
+  },
+  "require": {
+    "ext-pdo": "*"
+  }
+}
