@@ -14,7 +14,7 @@ class FilmFilterDTO
         $this->init($request);
     }
 
-    public static function make(Request $request)
+    public static function make(Request $request): FilmFilterDTO
     {
         return new self($request);
     }

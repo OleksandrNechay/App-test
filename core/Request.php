@@ -23,6 +23,11 @@ class Request
         return $queryArray;
     }
 
+    public function getUri(): string
+    {
+        return $_SERVER['REQUEST_URI'];
+    }
+
     public function getPath(): string
     {
         $requestUri = $_SERVER['REQUEST_URI'];

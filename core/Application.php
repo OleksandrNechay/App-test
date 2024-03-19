@@ -6,6 +6,7 @@ use Database\DB;
 
 class Application
 {
+
     public Router $router;
     public Request $request;
     public Response $response;

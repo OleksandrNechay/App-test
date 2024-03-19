@@ -1,7 +1,7 @@
 <!-- Footer content -->
-<footer class="footer-container fixed-bottom bg-light py-3">
-    <div class="container text-center">
-        <p class="footer-text mb-0">&copy; <?php echo date('Y'); ?> Test project</p>
+<footer class="footer mt-auto py-3">
+    <div class="container-fluid text-center">
+        <span class="text-muted">&copy; Test project </span>
     </div>
 </footer>
 

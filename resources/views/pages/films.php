@@ -1,7 +1,7 @@
 @header
 
 <main>
-    <div class="container mt-4">
+    <div class="container-fluid mt-4">
         <div class="row align-items-center mb-4">
             <div class="col-md-12 mb-4">
                 <div class="d-flex justify-content-between align-items-center border-bottom pb-2">
@@ -18,8 +18,8 @@
                 </div>
             </div>
         </div>
-        <div class="films-container" style="height: 500px; overflow-y: auto;">
-            <div class="films">
+        <div class="row">
+            <div class="col-md-12">
                 <?php if (empty($films)): ?>
                     <div class="alert alert-warning" role="alert">
                         Nothing was found for your request.
@@ -29,16 +29,26 @@
                 <?php endif; ?>
             </div>
         </div>
-        <div class="col-md-12">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">
-                Add Film
-            </button>
+
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">
+                        Add Film
+                    </button>
+                    <button type="button" class="btn btn-success ms-2" id="uploadFileButton" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                        Upload File
+                    </button>
+                </div>
+            </div>
         </div>
+
     </div>
 </main>
 
 
 @include('components/modals/film-create')
+@include('components/modals/upload-file')
 @include('components/modals/success')
 @include('components/modals/deleted')
 

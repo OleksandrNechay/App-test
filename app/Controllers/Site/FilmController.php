@@ -6,26 +6,26 @@ use App\Filters\Film\FilmFilterDTO;
 use App\Repositories\FilmRepository;
 use Core\Request;
 use Core\Response;
-use Core\Viewer;
+use Core\View;
 
 class FilmController
 {
-    protected Viewer $viewer;
+    protected View $view;
     protected FilmRepository $filmRepository;
 
     public function __construct()
     {
-        $this->viewer = new Viewer();
+        $this->view = new View();
         $this->filmRepository = new FilmRepository();
     }
 
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $inputs = FilmFilterDTO::make($request);
 
         $films = $this->filmRepository->filter($inputs)->get();
 
-        return $this->viewer->renderView('films', [
+        return $this->view->render('films', [
             'films' => $films,
             'search' => $inputs->search
         ]);
@@ -41,15 +41,15 @@ class FilmController
         return $responseHandler->json(['isCreated' => $isCreated]);
     }
 
-    public function show(Request $request)
+    public function show(Request $request): View
     {
         $id = $request->getOption('id');
 
         $film = $this->filmRepository->findById($id);
 
-        if (!$film) return $this->viewer->notFound();
+        if (!$film) return $this->view->notFound();
 
-        return $this->viewer->renderView('film', [
+        return $this->view->render('film', [
             'film' => $this->filmRepository->findById($id)
         ]);
     }

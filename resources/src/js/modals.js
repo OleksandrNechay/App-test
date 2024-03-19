@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     login();
     registration();
     createFilm();
+    uploadFile();
 });
 
 function login() {
@@ -20,7 +21,7 @@ function login() {
     });
 }
 
-function registration(){
+function registration() {
     const signUpButton = document.querySelector('.btn.btn-primary');
     signUpButton.addEventListener('click', function () {
         const registrationModal = new bootstrap.Modal(document.getElementById('registrationModal'));
@@ -35,7 +36,7 @@ function registration(){
     });
 }
 
-function createFilm(){
+function createFilm() {
     const addFilmButton = document.querySelector('.btn.btn-primary[data-bs-toggle="modal"]');
     const addFilmModal = new bootstrap.Modal(document.getElementById('addFilmModal'));
 
@@ -50,6 +51,28 @@ function createFilm(){
     });
 }
 
+function uploadFile() {
+    const uploadFileButton = document.getElementById('uploadFileButton');
+    const uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
+
+    uploadFileButton.addEventListener('click', function () {
+        uploadModal.show();
+    });
+
+    const uploadForm = document.getElementById('uploadForm');
+    uploadForm.addEventListener('submit', function (event) { // Add 'event' parameter here
+        event.preventDefault(); // Prevent default form submission behavior
+        send(uploadModal, uploadForm, '/upload');
+    });
+
+    const uploadButton = document.querySelector('.modal-footer .btn.btn-success');
+
+    uploadButton.addEventListener('click', function () {
+        // Trigger the form submission when the "Upload" button is clicked
+        uploadForm.dispatchEvent(new Event('submit'));
+    });
+}
+
 function send(modal, form, url) {
     fetch(url, {
         method: 'POST',
@@ -57,7 +80,7 @@ function send(modal, form, url) {
     }).then(response => response.json())
         .then(data => {
             modal.hide();
-            if(data.isCreated){
+            if (data.isCreated) {
                 const exampleModal = new bootstrap.Modal(document.getElementById('successModal'));
                 exampleModal.show();
             }

@@ -4,23 +4,23 @@ namespace App\Controllers\Site;
 
 use App\Repositories\FilmRepository;
 use App\Repositories\UserRepository;
-use Core\Viewer;
+use Core\View;
 
 class HomeController
 {
-    protected Viewer $viewer;
+    protected View $view;
     protected UserRepository $userRepository;
     protected FilmRepository $filmRepository;
 
     public function __construct()
     {
-        $this->viewer = new Viewer();
-        $this->userRepository = new UserRepository();
-        $this->filmRepository = new FilmRepository();
+        $this->view = new View();
+//        $this->userRepository = new UserRepository();
+//        $this->filmRepository = new FilmRepository();
     }
 
-    public function index()
+    public function index() : View
     {
-        return $this->viewer->renderView('home');
+        return $this->view->render('home');
     }
 }

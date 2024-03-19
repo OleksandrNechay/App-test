@@ -2,16 +2,23 @@
 
 namespace Core;
 
-class Viewer
+class View
 {
     private string $baseDir = __DIR__ . "/../resources/views";
+    private string $view;
 
-    public function renderView(string $view, array $options = []): array|string
+    public function __toString(): string
     {
-        $viewContent = $this->getViewContent(view: $view, options: $options);
-        $processedContent = $this->insertComponents($viewContent, options: $options);
+        return $this->view;
+    }
 
-        return $processedContent;
+    public function render(string $view, array $options = []): self
+    {
+        $viewContent = $this->getViewContent($view, $options);
+        $processedContent = $this->insertComponents($viewContent);
+
+        $this->view = $processedContent;
+        return $this;
     }
 
     protected function getViewContent(string $view, array $options): false|string
@@ -25,13 +32,12 @@ class Viewer
         return ob_get_clean();
     }
 
-    protected function insertComponents($content, array $options = []): array|string
+    protected function insertComponents($content): array|string
     {
         $header = file_get_contents($this->baseDir . "/sections/header.php");
         $footer = file_get_contents($this->baseDir . "/sections/footer.php");
 
         // Replace placeholders with actual content
-        $headerContent = $this->getViewContent('header', $options);
         $content = str_replace('@header', $header, $content);
         $content = str_replace('@footer', $footer, $content);
 
@@ -48,10 +54,10 @@ class Viewer
         return $content;
     }
 
-    public function notFound(): array|string
+    public function notFound(): View
     {
         $response = new Response();
         $response->setStatusCode(404);
-        return $this->renderView('404');
+        return $this->render('404');
     }
 }
