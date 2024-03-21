@@ -8,6 +8,8 @@ class TxtHandler implements FileHandleContract
 {
     public function handleContent(string $content): array
     {
+        $content = ltrim($content, "\xEF\xBB\xBF \t\n\r\0\x0B");
+
         $data = [];
         $lines = explode("\n", $content);
 

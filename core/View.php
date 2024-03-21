@@ -34,8 +34,13 @@ class View
 
     protected function insertComponents($content): array|string
     {
-        $header = file_get_contents($this->baseDir . "/sections/header.php");
-        $footer = file_get_contents($this->baseDir . "/sections/footer.php");
+        ob_start();
+        include_once $this->baseDir . "/sections/header.php";
+        $header = ob_get_clean();
+
+        ob_start();
+        include_once $this->baseDir . "/sections/footer.php";
+        $footer = ob_get_clean();
 
         // Replace placeholders with actual content
         $content = str_replace('@header', $header, $content);
@@ -45,7 +50,9 @@ class View
         $content = preg_replace_callback('/@include\([\'"]([^\'"]+)[\'"]\)/', function ($matches) {
             $file = $this->baseDir . "/" . $matches[1] . '.php';
             if (file_exists($file)) {
-                return file_get_contents($file);
+                ob_start();
+                include $file;
+                return ob_get_clean();
             } else {
                 return ''; // Return empty string if file not found
             }

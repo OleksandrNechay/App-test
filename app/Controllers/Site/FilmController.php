@@ -35,22 +35,22 @@ class FilmController
     {
         $data = $request->getData();
 
-        $isCreated = $this->filmRepository->create($data);
+        $this->filmRepository->create($data);
 
         $responseHandler = new Response();
-        return $responseHandler->json(['isCreated' => $isCreated]);
+        return $responseHandler->json(['isCreated' => true]);
     }
 
     public function show(Request $request): View
     {
         $id = $request->getOption('id');
 
-        $film = $this->filmRepository->findById($id);
+        $film = $this->filmRepository->findBy('id', $id);
 
         if (!$film) return $this->view->notFound();
 
         return $this->view->render('film', [
-            'film' => $this->filmRepository->findById($id)
+            'film' => $film
         ]);
     }
 
@@ -58,6 +58,5 @@ class FilmController
     {
         $id = $request->getOption('id');
         $this->filmRepository->delete($id);
-
     }
 }

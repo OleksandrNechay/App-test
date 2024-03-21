@@ -18,8 +18,14 @@
                         <label for="password">Password:</label>
                         <input type="password" id="password" name="password" required class="form-control">
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <!-- Error message placeholders -->
+                    <div id="errorMessage" class="text-danger"></div>
+
+                    <div class="text-center mt-2">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
                 </form>
+
             </div>
         </div>
     </div>

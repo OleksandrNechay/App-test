@@ -10,10 +10,10 @@ class UserRepository
 
     public function __construct()
     {
-        $this->user = new User();
+        $this->model = new User();
     }
 
-    public function create(array $data): bool
+    public function create(array $data): ?array
     {
         return $this->model->create($data);
     }
@@ -28,9 +28,9 @@ class UserRepository
         return $this->model->delete($id);
     }
 
-    public function findById(int $id): ?array
+    public function findBy(string $column, mixed $value): ?array
     {
-        return $this->model->findById($id);
+        return $this->model->findBy($column, $value);
     }
 
     public function all(): array

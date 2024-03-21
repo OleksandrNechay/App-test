@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <!-- Success message placeholder -->
                 <div class="alert alert-success" id="successMessage" role="alert">
-                    Film successfully created!
+                    Successfully created!
                 </div>
             </div>
         </div>

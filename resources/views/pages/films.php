@@ -30,19 +30,22 @@
             </div>
         </div>
 
-        <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFilmModal">
-                        Add Film
-                    </button>
-                    <button type="button" class="btn btn-success ms-2" id="uploadFileButton" data-bs-toggle="modal" data-bs-target="#uploadModal">
-                        Upload File
-                    </button>
+        <?php if (\Core\Application::$app->isAuthorized()): ?>
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#addFilmModal">
+                            Add Film
+                        </button>
+                        <button type="button" class="btn btn-success ms-2" id="uploadFileButton" data-bs-toggle="modal"
+                                data-bs-target="#uploadModal">
+                            Upload File
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-
+        <?php endif; ?>
     </div>
 </main>
 

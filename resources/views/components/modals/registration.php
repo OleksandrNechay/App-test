@@ -17,6 +17,8 @@
                     <div class="mb-3">
                         <label for="registrationEmail" class="form-label">Email address</label>
                         <input type="email" class="form-control" id="registrationEmail" name="email" required>
+                        <!-- Error message placeholders -->
+                        <div id="emailError" class="text-danger"></div>
                     </div>
                     <div class="mb-3">
                         <label for="registrationPassword" class="form-label">Password</label>

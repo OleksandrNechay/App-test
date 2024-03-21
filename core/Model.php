@@ -9,6 +9,7 @@ abstract class Model
 {
     protected PDO $pdo;
     protected string $table;
+    protected array $attributes;
 
     public function __construct()
     {
@@ -18,19 +19,26 @@ abstract class Model
     public function all(): array
     {
         $query = "SELECT * FROM {$this->table}";
-        $stmt = $this->pdo->query($query);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $statement = $this->pdo->query($query);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function create(array $data): bool
+    public function create(array $data): ?array
     {
-        $columns = implode(', ', array_keys($data));
-        $values = implode(', ', array_fill(0, count($data), '?'));
+        $columns = implode(', ', $this->attributes);
+        $params = array_map(fn($attr) => ":$attr", $this->attributes);
+        $placeholders = implode(', ', $params);
 
-        $query = "INSERT INTO {$this->table} ($columns) VALUES ($values)";
-        $stmt = $this->pdo->prepare($query);
+        $query = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
+        $statement = $this->pdo->prepare($query);
 
-        return $stmt->execute(array_values($data));
+        if ($statement->execute($data)) {
+            // Fetch the created user by ID or any other unique identifier
+            $userId = $this->pdo->lastInsertId();
+            return $this->findBy('id',  $userId); // Assuming you have a findById method in your repository
+        }
+
+        return null;
     }
 
     public function update(int $id, array $data): bool
@@ -44,23 +52,23 @@ abstract class Model
         $query = "UPDATE {$this->table} SET $setClause WHERE id = ?";
         $data['id'] = $id;
 
-        $stmt = $this->pdo->prepare($query);
-        return $stmt->execute(array_values($data));
+        $statement = $this->pdo->prepare($query);
+        return $statement->execute(array_values($data));
     }
 
     public function delete(int $id): bool
     {
         $query = "DELETE FROM {$this->table} WHERE id = ?";
-        $stmt = $this->pdo->prepare($query);
-        return $stmt->execute([$id]);
+        $statement = $this->pdo->prepare($query);
+        return $statement->execute([$id]);
     }
 
-    public function findById(int $id): ?array
+    public function findBy(string $column, mixed $value): ?array
     {
-        $query = "SELECT * FROM {$this->table} WHERE id = ?";
-        $stmt = $this->pdo->prepare($query);
-        $stmt->execute([$id]);
+        $query = "SELECT * FROM {$this->table} WHERE {$column} = ?";
+        $statement = $this->pdo->prepare($query);
+        $statement->execute([$value]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        return $statement->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 }

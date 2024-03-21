@@ -19,7 +19,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="releaseDate" class="form-label">Release Date</label>
-                        <input type="date" class="form-control" id="release_date" name="release_date" required>
+                        <input type="number" class="form-control" id="release_date" name="release_date" min="1900" max="3000" required>
                     </div>
                     <div class="mb-3">
                         <label for="actors" class="form-label">Actors</label>

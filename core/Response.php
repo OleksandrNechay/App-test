@@ -14,6 +14,12 @@ class Response
         header("$name: $value");
     }
 
+    public function redirect(string $url, int $statusCode = 301): void
+    {
+        $this->setStatusCode($statusCode);
+        header('Location:' . $url);
+    }
+
     public function json(array $data, int $statusCode = 200): false|string
     {
         $this->setStatusCode($statusCode);

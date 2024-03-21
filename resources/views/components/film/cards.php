@@ -8,8 +8,11 @@
                 <p class="card-text"><strong>Actors:</strong> <?php echo $film['actors']; ?></p>
             </div>
         </a>
-        <div class="card-footer d-flex justify-content-end">
-            <a href="#" class="btn btn-danger btn-sm delete-film" data-film-id="<?php echo $film['id']; ?>">Delete</a>
-        </div>
+        <?php if (\Core\Application::$app->isAuthorized()): ?>
+            <div class="card-footer d-flex justify-content-end">
+                <a href="#" class="btn btn-danger btn-sm delete-film"
+                   data-film-id="<?php echo $film['id']; ?>">Delete</a>
+            </div>
+        <?php endif; ?>
     </div>
 <?php endforeach; ?>

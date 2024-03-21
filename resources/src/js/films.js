@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function deleteFilm() {
     const deleteButtons = document.querySelectorAll('.delete-film');
+    if(!deleteButtons) return;
 
     deleteButtons.forEach(function (button) {
         button.addEventListener('click', function (event) {

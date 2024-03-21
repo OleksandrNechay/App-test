@@ -16,6 +16,9 @@ RUN apt-get update && \
     default-mysql-client \
     -y --no-install-recommends
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 # Install PHP extensions
 RUN docker-php-ext-install zip pdo_mysql
 

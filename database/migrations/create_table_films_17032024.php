@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Migrations;
+namespace Database\Migrations;
 
 use PDO;
 
@@ -20,8 +20,8 @@ class create_table_films_17032024
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 title VARCHAR(255) NOT NULL,
                 format VARCHAR(50) NOT NULL,
-                release_date DATE,
-                 actors TEXT NOT NULL,
+                release_date VARCHAR(50),
+                actors TEXT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )

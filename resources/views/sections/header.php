@@ -31,8 +31,16 @@
         <form id="search-form" class="form-inline my-2 my-lg-0 mr-2">
             <input class="form-control mr-sm-2" type="search" placeholder="Search..." aria-label="Search" name="q">
         </form>
+        <?php if (!\Core\Application::$app->isAuthorized()): ?>
         <button class="btn btn-outline-primary mr-2" type="button">Login</button>
-        <button class="btn btn-primary" type="button">Sign-up</button>
+        <button class="btn btn-primary registration" type="button">Sign-up</button>
+        <?php endif; ?>
+
+        <?php if (\Core\Application::$app->isAuthorized()): ?>
+            <form id="logoutForm" method="POST">
+                <button id="logoutButton" class="btn btn-outline-danger" type="button">Logout</button>
+            </form>
+        <?php endif; ?>
     </div>
 </header>
 

@@ -10,7 +10,7 @@ class Migration
     private PDO $pdo;
     public function __construct()
     {
-        $this->pdo = new PDO("mysql:host=127.0.0.1;port=3399;dbname=appDB", DB_USER, DB_PASSWORD);
+        $this->pdo = new PDO("mysql:host=".DB_HOST.";port=3399;dbname=".DB_NAME,DB_USER, DB_PASSWORD);
     }
 
     public function run(): void

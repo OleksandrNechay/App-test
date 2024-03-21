@@ -19,6 +19,11 @@ class QueryBuilder
         $this->table = $table;
     }
 
+    public static function make(string $table): QueryBuilder
+    {
+        return new self($table);
+    }
+
     public function limit(int $limit): self
     {
         $this->limit = "LIMIT {$limit}";
@@ -27,7 +32,9 @@ class QueryBuilder
 
     public function where(string $column, string $operator, $value): self
     {
-        $this->conditions[] = "{$column} {$operator} :{$column}";
+        $placeholder = ':' . $column;
+        $this->conditions[] = "{$column} {$operator} {$placeholder}";
+        $this->bindings[$placeholder] = $value;
         return $this;
     }
 
@@ -70,5 +77,18 @@ class QueryBuilder
 
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function first(): ?array
+    {
+        $sql = $this->buildQuery();
+        $query = $this->pdo->prepare($sql);
+
+        foreach ($this->bindings as $key => $value) {
+            $query->bindValue($key, $value);
+        }
+
+        $query->execute();
+        return $query->fetch(PDO::FETCH_ASSOC) ?: null;
     }
 }
