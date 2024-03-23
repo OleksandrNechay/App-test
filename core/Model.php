@@ -29,13 +29,16 @@ abstract class Model
         $params = array_map(fn($attr) => ":$attr", $this->attributes);
         $placeholders = implode(', ', $params);
 
+        // Convert special characters to their actual representation
+        $data = array_map(fn($value) => htmlspecialchars_decode($value), $data);
+
         $query = "INSERT INTO {$this->table} ($columns) VALUES ($placeholders)";
         $statement = $this->pdo->prepare($query);
 
         if ($statement->execute($data)) {
             // Fetch the created user by ID or any other unique identifier
             $userId = $this->pdo->lastInsertId();
-            return $this->findBy('id',  $userId); // Assuming you have a findById method in your repository
+            return $this->findBy('id', $userId); // Assuming you have a findById method in your repository
         }
 
         return null;

@@ -127,7 +127,7 @@ function send(modal, form, url) {
                 errorMessage.style.display = 'block';
 
                 return;
-            }else if (data.login === false) {
+            } else if (data.login === false) {
                 const errorMessage = document.getElementById('errorMessage');
                 errorMessage.textContent = data.message;
                 return;
@@ -154,10 +154,10 @@ function validate(data) {
     let errors = {};
 
     const rules = {
-        'title': { required: true, maxLength: 255 },
-        'format': { required: true, maxLength: 50 },
-        'releaseDate': { required: true, min: 1900, max: new Date().getFullYear() },
-        'actors': { required: true, pattern: /^[A-Za-z,' \-\']+$/ }
+        'title': {required: true, maxLength: 255},
+        'format': {required: true, maxLength: 50},
+        'releaseDate': {required: true, min: 1900, max: new Date().getFullYear()},
+        'actors': {required: true, maxLength: 65535, pattern: /^[A-Za-z,' \-\']+$/}
     };
 
     // Check each field against the rules

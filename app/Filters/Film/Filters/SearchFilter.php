@@ -17,7 +17,7 @@ class SearchFilter implements Filter
     public function apply(QueryBuilder $queryBuilder): QueryBuilder
     {
         if ($this->search) {
-            $searchTerm = '%' . $this->search . '%';
+            $searchTerm = '%' . html_entity_decode($this->search) . '%';
 
             return $queryBuilder->whereRaw("title LIKE :search OR actors LIKE :search", [':search' => $searchTerm]);
         }
