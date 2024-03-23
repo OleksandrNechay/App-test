@@ -38,7 +38,7 @@ class FilmController
         $this->filmRepository->create($data);
 
         $responseHandler = new Response();
-        return $responseHandler->json(['isCreated' => true]);
+        return $responseHandler->json(['success' => true, 'message' => 'Film created successfully.']);
     }
 
     public function show(Request $request): View

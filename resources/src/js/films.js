@@ -36,10 +36,12 @@ function deleteFilm() {
         });
     });
 
-    const refreshButton = document.getElementById('refreshButton');
-    refreshButton.addEventListener('click', function () {
-        location.reload();
-    });
+    const refreshButtons = document.querySelectorAll('.refresh-button');
+    refreshButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            location.reload();
+        });
+    })
 }
 
 function onSubmitSearchEvent() {

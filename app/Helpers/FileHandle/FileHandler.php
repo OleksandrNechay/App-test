@@ -6,17 +6,19 @@ use App\Helpers\FileHandle\Handlers\TxtHandler;
 
 class FileHandler
 {
+    protected array $file;
     protected string $extension;
     protected array $allowedExtensions = ['txt'];
 
-    public function __construct(string $extension)
+    public function __construct(array $file)
     {
-        $this->extension = $extension;
+        $this->file = $file;
+        $this->extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     }
 
-    public static function make(string $extension): FileHandler
+    public static function make(array $file): FileHandler
     {
-        return new self($extension);
+        return new self($file);
     }
 
     public function get(): FileHandleContract
@@ -33,4 +35,5 @@ class FileHandler
     {
         return in_array($this->extension, $this->allowedExtensions);
     }
+
 }

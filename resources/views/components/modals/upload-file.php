@@ -13,10 +13,14 @@
                         <label for="fileInput" class="form-label">Choose File</label>
                         <input type="file" class="form-control-file" id="fileInput" name="file" required>
                     </div>
+                    <div class="alert alert-danger" id="errorMessage" style="display: none;">
+                        <span id="errorTitle">File processing error. Incorrect data in the file</span>
+                        <ul id="errorList"></ul> <!-- Add error list for details -->
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-success">Upload</button>
+                <button type="button" class="btn btn-success" id="uploadButton">Upload</button>
             </div>
         </div>
     </div>

@@ -6,7 +6,7 @@
                     Successfully deleted!
                 </div>
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-primary w-100" id="refreshButton">OK</button>
+                    <button type="button" class="btn btn-primary w-100 refresh-button">OK</button>
                 </div>
             </div>
         </div>

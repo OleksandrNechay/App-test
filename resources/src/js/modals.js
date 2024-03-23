@@ -35,13 +35,13 @@ function registration() {
     const registrationForm = document.getElementById('registrationForm');
     registrationForm.addEventListener('submit', function (event) {
         event.preventDefault(); // Prevent default form submission
-        send(registrationModal, registrationForm, '/register'); // Assuming '/register' is your registration endpoint
+        send(registrationModal, registrationForm, '/register');
     });
 }
 
 function logout() {
     const logoutButton = document.getElementById('logoutButton');
-    if(!logoutButton) return;
+    if (!logoutButton) return;
 
     logoutButton.addEventListener('click', function () {
         fetch('/logout', {
@@ -67,23 +67,35 @@ function logout() {
 
 function createFilm() {
     const addFilmButton = document.querySelector('.btn.btn-primary[data-bs-toggle="modal"]');
-    if(!addFilmButton) return;
+    if (!addFilmButton) return;
     const addFilmModal = new bootstrap.Modal(document.getElementById('addFilmModal'));
 
     addFilmButton.addEventListener('click', function () {
         addFilmModal.show();
     });
 
-    const registrationForm = document.getElementById('addFilmForm');
-    registrationForm.addEventListener('submit', function (event) {
+    const addFilmForm = document.getElementById('addFilmForm');
+    addFilmForm.addEventListener('submit', function (event) {
         event.preventDefault();
-        send(addFilmModal, registrationForm, '/film/create');
+        let form = new FormData(addFilmForm)
+
+        let data = {
+            'title': form.get('title'),
+            'format': form.get('format'),
+            'releaseDate': form.get('release_date'),
+            'actors': form.get('actors')
+        }
+
+        let isValid = validate(data)
+        if (!isValid) return;
+
+        send(addFilmModal, addFilmForm, '/film/create');
     });
 }
 
 function uploadFile() {
     const uploadFileButton = document.getElementById('uploadFileButton');
-    if(!uploadFileButton) return;
+    if (!uploadFileButton) return;
     const uploadModal = new bootstrap.Modal(document.getElementById('uploadModal'));
 
     uploadFileButton.addEventListener('click', function () {
@@ -99,7 +111,6 @@ function uploadFile() {
     const uploadButton = document.querySelector('.modal-footer .btn.btn-success');
 
     uploadButton.addEventListener('click', function () {
-        // Trigger the form submission when the "Upload" button is clicked
         uploadForm.dispatchEvent(new Event('submit'));
     });
 }
@@ -110,7 +121,13 @@ function send(modal, form, url) {
         body: new FormData(form)
     }).then(response => response.json())
         .then(data => {
-            if (data.login === false) {
+            if (data.exception) {
+                const errorMessage = document.getElementById('errorMessage');
+                errorMessage.textContent = data.message;
+                errorMessage.style.display = 'block';
+
+                return;
+            }else if (data.login === false) {
                 const errorMessage = document.getElementById('errorMessage');
                 errorMessage.textContent = data.message;
                 return;
@@ -118,10 +135,12 @@ function send(modal, form, url) {
                 const errorMessage = document.getElementById('emailError');
                 errorMessage.textContent = data.message;
                 return;
-            }else if (data.isCreated) {
-                modal.hide();
-                const exampleModal = new bootstrap.Modal(document.getElementById('successModal'));
-                exampleModal.show();
+            } else if (data.success) {
+                modal.hide(); // Assuming you have a 'modal' variable that refers to the upload modal
+                const successModal = new bootstrap.Modal(document.getElementById('successModal'));
+                const successMessage = document.getElementById('successMessage');
+                successMessage.textContent = data.message; // Insert the message from the controller
+                successModal.show();
                 return;
             }
             location.reload();
@@ -129,4 +148,67 @@ function send(modal, form, url) {
         .catch(error => {
             console.error('Error:', error);
         });
+}
+
+function validate(data) {
+    let errors = {};
+
+    const rules = {
+        'title': { required: true, maxLength: 255 },
+        'format': { required: true, maxLength: 50 },
+        'releaseDate': { required: true, min: 1900, max: new Date().getFullYear() },
+        'actors': { required: true, pattern: /^[A-Za-z,' \-\']+$/ }
+    };
+
+    // Check each field against the rules
+    Object.keys(rules).forEach(key => {
+        const fieldRules = rules[key];
+        const value = data[key].trim();
+
+        if (fieldRules.required && value === '') {
+            errors[key] = `${capitalize(key)} is required`;
+        }
+
+        if (fieldRules.maxLength && value.length > fieldRules.maxLength) {
+            errors[key] = `${capitalize(key)} cannot exceed ${fieldRules.maxLength} characters`;
+        }
+
+        if (fieldRules.min && Number(value) < fieldRules.min) {
+            errors[key] = `${capitalize(key)} must be at least ${fieldRules.min}`;
+        }
+
+        if (fieldRules.max && Number(value) > fieldRules.max) {
+            errors[key] = `${capitalize(key)} must not exceed ${fieldRules.max}`;
+        }
+
+        if (fieldRules.pattern && !fieldRules.pattern.test(value)) {
+            errors[key] = `${capitalize(key)} should only contain letters, hyphens, commas, and single quotes`;
+        }
+    });
+
+    displayErrors(errors);
+    return Object.keys(errors).length === 0;
+}
+
+function displayErrors(errors) {
+    clearErrors();
+
+    Object.keys(errors).forEach(key => {
+        const errorElement = document.getElementById(key + 'Error');
+        if (errorElement) {
+            errorElement.textContent = errors[key];
+            errorElement.style.display = 'block'; // Set display to block to make error visible
+        }
+    });
+}
+
+function clearErrors() {
+    document.querySelectorAll('.invalid-feedback').forEach(errorElement => {
+        errorElement.textContent = '';
+        errorElement.style.display = 'none';
+    });
+}
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
 }

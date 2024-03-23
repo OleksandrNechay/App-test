@@ -12,21 +12,30 @@
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
                         <input type="text" class="form-control" id="title" name="title" required>
+                        <div id="titleError" class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label for="format" class="form-label">Format</label>
-                        <input type="text" class="form-control" id="format" name="format" required>
+                        <select class="form-select" id="format" name="format" required>
+                            <option value="DVD">DVD</option>
+                            <option value="VHS">VHS</option>
+                            <option value="Blue-Ray">Blue-Ray</option>
+                            <option value="Digital">Digital</option>
+                        </select>
+                        <div id="formatError" class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label for="releaseDate" class="form-label">Release Date</label>
-                        <input type="number" class="form-control" id="release_date" name="release_date" min="1900" max="3000" required>
+                        <input type="number" class="form-control" id="release_date" name="release_date" min="1900" max="2024" required>
+                        <div id="releaseDateError" class="invalid-feedback"></div>
                     </div>
                     <div class="mb-3">
                         <label for="actors" class="form-label">Actors</label>
                         <textarea class="form-control" id="actors" name="actors" rows="3" required></textarea>
+                        <div id="actorsError" class="invalid-feedback"></div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary"> Create </button>
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
                 </form>
             </div>

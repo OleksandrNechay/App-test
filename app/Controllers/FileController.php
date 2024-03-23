@@ -4,30 +4,30 @@ namespace App\Controllers;
 
 use App\Helpers\FileHandle\FileHandler;
 use App\Repositories\FilmRepository;
+use App\Services\FileUploadService;
 
 class FileController
 {
     protected FilmRepository $filmRepository;
+    protected FileUploadService $fileUploadService;
 
     public function __construct()
     {
         $this->filmRepository = new FilmRepository();
+        $this->fileUploadService = new FileUploadService();
     }
 
     public function handle()
     {
-        if (!isset($_FILES['file'])) return json_encode(['error' => 'No file uploaded']);
+        $uploadedFile = $_FILES['file'];
+        $data = $this->fileUploadService->processFileUpload($uploadedFile);
 
-        $extension = pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-        $fileContent = file_get_contents($_FILES['file']['tmp_name']);
+        if(isset($data['exception'])) return json_encode($data);
 
-        $handler = FileHandler::make($extension)->get();
-        $films = $handler->handleContent($fileContent);
-
-        foreach ($films as $filmData) {
-            $this->filmRepository->create($filmData);
+        foreach ($data as $film) {
+            $this->filmRepository->create($film);
         }
 
-        return json_encode(['message' => 'File uploaded and processed successfully']);
+        return json_encode(['success' => true, 'message' => "File uploaded and processed successfully. Added " . count($data) . " new movies."]);
     }
 }
